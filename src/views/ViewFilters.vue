@@ -5,9 +5,11 @@
   <p>Min points: {{ minPoints }}</p>
   <p>Max points: {{ maxPoints }}</p>
   <button class="btn" @click="findPer2">FindPer</button>
-  <button class="btn" @click="sortAll">All</button>
-  <button class="btn btn-info" @click="sortPer">Per</button>
-  <input class="input input-primary m-1" type="text" />
+  <button class="btn btn-xs" @click="sortAll">All</button>
+  <button class="btn btn-xs btn-accent" @click="sortSiri">Siri</button>
+  <button class="btn btn-xs btn-secondary" @click="sortPer">Per</button>
+  <input class="input input-primary m-1" v-model="searchText" type="text" />
+  {{ searchText }}
   <li v-for="(user, index) in getUsers" :key="index">
     {{ user.name
     }}<button
@@ -29,6 +31,7 @@ const users = ref([
   { name: "Ole", age: 54, points: 120 },
 ]);
 const activeFilter = ref("All");
+const searchText = ref("");
 
 function findPer2() {
   var n;
@@ -44,49 +47,83 @@ function filterTodo(user) {
   }
 }
 const getUsers = computed(() => {
-  if (activeFilter.value === "All") {
-    return users.value;
+  if (!searchText.value) {
+    if (activeFilter.value === "All") {
+      return users.value;
+    }
+    return users.value.filter((user) => user.name === activeFilter.value);
+  } else {
+    console.log("searching");
+    // return users.value;
+    return users.value.filter(
+      (user) =>
+        user.name.toLowerCase().includes(searchText.value.toLowerCase()) ||
+        searchText.value.toLowerCase().includes(user.name.toLowerCase())
+    );
   }
-  return users.value.filter((user) => user.name === activeFilter.value);
 });
 
 function sortAll() {
+  searchText.value = "";
   activeFilter.value = "All";
 }
 function sortPer() {
+  searchText.value = "";
   activeFilter.value = "Per";
 }
+function sortSiri() {
+  searchText.value = "";
+  activeFilter.value = "Siri";
+}
+// input search in array
+// const filterText = computed(() => {
+//   return users.value.filter((user) =>
+//     user.name.toLowerCase().indexOf(user.value.toLowerCase()) != -1;
+//   );
+// });
 
 const ageCalc = computed(() => {
-  // Two ways doing it, 1 with arrow and 1 without
-  // function age(item) {
-  //   return item.age;
-  // }
+  if (getUsers.value.length > 0) {
+    // Two ways doing it, 1 with arrow and 1 without
+    // function age(item) {
+    //   return item.age;
+    // }
 
-  // function sum(prev, next) {
-  //   return prev + next;
-  // }
+    // function sum(prev, next) {
+    //   return prev + next;
+    // }
 
-  // return getUsers.value.map(age).reduce(sum);
-  //WITHOUT ARROW
-  return getUsers.value
-    .map((item) => item.age)
-    .reduce((prev, next) => prev + next);
+    // return getUsers.value.map(age).reduce(sum);
+    //WITHOUT ARROW
+    return getUsers.value
+      .map((item) => item.age)
+      .reduce((prev, next) => prev + next);
+  }
+  return 0;
 });
 const avgPointsCalc = computed(() => {
-  return (
-    getUsers.value
-      .map((item) => item.points)
-      .reduce((prev, next) => prev + next) / getUsers.value.length
-  );
+  if (getUsers.value.length > 0) {
+    return (
+      getUsers.value
+        .map((item) => item.points)
+        .reduce((prev, next) => prev + next) / getUsers.value.length
+    );
+  }
+  return 0;
 });
 const maxPoints = computed(() => {
-  var calc = getUsers.value.map((item) => item.age);
-  return Math.max(...calc);
+  if (getUsers.value.length > 0) {
+    var calc = getUsers.value.map((item) => item.age);
+    return Math.max(...calc);
+  }
+  return 0;
 });
 const minPoints = computed(() => {
-  var calc = getUsers.value.map((item) => item.age);
-  return Math.min(...calc);
+  if (getUsers.value.length > 0) {
+    var calc = getUsers.value.map((item) => item.age);
+    return Math.min(...calc);
+  }
+  return 0;
 });
 </script>
 
