@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import SlotsView from "../views/SlotsView.vue";
+import ViewFilters from "../views/ViewFilters.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,7 +9,7 @@ const router = createRouter({
     {
       path: "/",
       name: "data",
-      component: SlotsView,
+      component: ViewFilters,
     },
     {
       path: "/about",
