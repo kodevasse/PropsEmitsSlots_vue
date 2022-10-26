@@ -1,4 +1,7 @@
 <template>
+  {{ csvString }}
+  <button class="btn btn-xs btn-error" @click="downloadUri">download</button>
+  <button class="btn btn-xs btn-error" @click="testerOne">tester1</button>
   <div>temp</div>
   <p>Total age: {{ ageCalc }}</p>
   <p>Average points: {{ avgPointsCalc }}</p>
@@ -27,8 +30,10 @@ import { ref, reactive, computed, onMounted } from "vue";
 const users = ref([
   { name: "Per", age: 33, points: 500 },
   { name: "Siri", age: 17, points: 200 },
-  { name: "Espen", age: 40, points: 100 },
-  { name: "Ole", age: 54, points: 120 },
+  { name: "Espen", age: 40, points: 120 },
+  { name: "Ole", age: 54, points: 320 },
+  { name: "Petter", age: 19, points: 520 },
+  { name: "Pål", age: 11, points: 320 },
 ]);
 const activeFilter = ref("All");
 const searchText = ref("");
@@ -125,6 +130,36 @@ const minPoints = computed(() => {
   }
   return 0;
 });
+// Array of objects to csv
+
+const csvString = computed(() => {
+  return [
+    ["data:text/csv;charset=utf-8,"],
+    ["Name", "Age", "Points"],
+    ...getUsers.value.map((item) => [item.name, item.age, item.points]),
+  ]
+    .map((e) => e.join(","))
+    .join("\n");
+});
+console.log(getUsers.value);
+const testerOne = () => {
+  console.log(csvString);
+  console.log(getUsers.value);
+};
+var encodedUri = computed(() => {
+  return encodeURI(csvString.value);
+});
+const downloadUri = () => {
+  window.open(encodedUri.value);
+};
+/*
+   [
+    ["Item ID", "Item Reference"],
+    [1, "Item 001"],
+    [2, "Item 002"],
+    [3, "Item 003"]
+   ]
+*/
 </script>
 
 <style scoped>
