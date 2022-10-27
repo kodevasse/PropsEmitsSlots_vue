@@ -5,7 +5,7 @@
     <button class="btn btn-xs btn-error" @click="testerOne">tester1</button>
   </div>
   <div
-    class="bg-gray-800 rounded-md pl-4 py-2 mx-2 my-2 border border-lime-500"
+    class="bg-gray-800 rounded-md pl-4 py-2 mx-2 my-2 border border-lime-500 hover:text-black"
   >
     <p>Total age: {{ ageCalc }}</p>
     <p>Average points: {{ avgPointsCalc }}</p>
@@ -38,10 +38,10 @@
     >
       <div v-if="!user.avatar" class="avatar w-10">
         <div class="rounded-full">
-          <img :srcset="`https://robohash.org/${user.name}.png`" />
+          <img class="pb-1" :srcset="`https://robohash.org/${user.name}.png`" />
         </div>
       </div>
-      {{ user.name }}
+      <p class="text-lime-700">{{ user.name }}</p>
       <p class="text-purple-400">points {{ user.points }}</p>
       <p class="text-pink-300">age {{ user.age }}</p>
       <button class="z-14 text-2xl" @click="activate(user)">💡</button>
@@ -230,6 +230,6 @@ const downloadUri = () => {
   color: rgb(20, 113, 120);
 }
 .active {
-  padding: 15px;
+  padding: 30px;
 }
 </style>
